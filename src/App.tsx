@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +15,7 @@ const PatientForm = lazy(() => import("./components/Patients/PatientForm"));
 const WeeklySchedule = lazy(() => import("./components/Dashboard/WeeklySchedule"));
 const StepTracker = lazy(() => import("./components/TwelveSteps/StepTracker"));
 const ContractsList = lazy(() => import("./components/Documents/ContractsList"));
+const MeditationPage = lazy(() => import("./pages/Meditation"));
 
 // Create placeholder pages for lazy-loaded routes
 const PacientesPage = () => (
@@ -50,6 +50,14 @@ const DocumentosPage = () => (
   </div>
 );
 
+const MeditationPageWrapper = () => (
+  <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+      <MeditationPage />
+    </Suspense>
+  </div>
+);
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -67,6 +75,7 @@ const App = () => (
           <Route path="/programacao" element={<ProgramacaoPage />} />
           <Route path="/12-passos" element={<TwelveStepsPage />} />
           <Route path="/documentos" element={<DocumentosPage />} />
+          <Route path="/meditacao" element={<MeditationPageWrapper />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

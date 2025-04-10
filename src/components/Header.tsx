@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { Menu, X, Instagram, User, FileText, Calendar, Home, Users, ClipboardList, Sun, Moon, Globe } from "lucide-react";
+import { Menu, X, Instagram, User, FileText, Calendar, Home, Users, ClipboardList, Sun, Moon, Globe, LifeBuoy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Toggle } from "@/components/ui/toggle";
@@ -15,6 +15,7 @@ const translations = {
     schedule: "Programação",
     steps: "12 Passos",
     documents: "Documentos",
+    meditation: "Meditação",
     login: "Entrar",
     loading: "Carregando...",
   },
@@ -24,6 +25,7 @@ const translations = {
     schedule: "Schedule",
     steps: "12 Steps",
     documents: "Documents",
+    meditation: "Meditation",
     login: "Login",
     loading: "Loading...",
   }
@@ -42,6 +44,7 @@ const Header = () => {
     { name: t.schedule, href: "/programacao", icon: Calendar },
     { name: t.steps, href: "/12-passos", icon: ClipboardList },
     { name: t.documents, href: "/documentos", icon: FileText },
+    { name: t.meditation, href: "/meditacao", icon: LifeBuoy },
   ];
 
   // Effect for theme changes
