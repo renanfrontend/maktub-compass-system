@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Mail, Lock, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,11 +13,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // This is a placeholder for actual authentication logic
     setIsLoading(true);
     
     try {
@@ -27,7 +27,8 @@ const Login = () => {
         title: "Sucesso",
         description: "Login realizado com sucesso!",
       });
-      // Redirect would happen here in a real app
+      // Navigate to dashboard after successful login
+      navigate("/");
     } catch (error) {
       toast({
         variant: "destructive",
@@ -39,18 +40,40 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    toast({
-      title: "Google Login",
-      description: "Funcionalidade a ser implementada.",
-    });
+  const handleGoogleLogin = async () => {
+    try {
+      toast({
+        title: "Google Login",
+        description: "Iniciando login com Google...",
+      });
+      // This would be implemented with actual Google authentication
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      navigate("/");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Falha no login com Google.",
+      });
+    }
   };
 
-  const handleInstagramLogin = () => {
-    toast({
-      title: "Instagram Login",
-      description: "Funcionalidade a ser implementada.",
-    });
+  const handleInstagramLogin = async () => {
+    try {
+      toast({
+        title: "Instagram Login",
+        description: "Iniciando login com Instagram...",
+      });
+      // This would be implemented with actual Instagram authentication
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      navigate("/");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Falha no login com Instagram.",
+      });
+    }
   };
 
   return (
