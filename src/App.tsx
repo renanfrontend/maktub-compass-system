@@ -4,11 +4,12 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
-import { lazy, Suspense } from "react";
+import PasswordRecovery from "./pages/PasswordRecovery";
 
 // Lazy loaded components
 const PatientForm = lazy(() => import("./components/Patients/PatientForm"));
@@ -49,23 +50,6 @@ const DocumentosPage = () => (
   </div>
 );
 
-// Placeholder page for password recovery
-const RecuperarSenhaPage = () => (
-  <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
-    <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
-      <h1 className="text-2xl font-bold mb-6">Recuperar Senha</h1>
-      <p className="text-gray-500 dark:text-gray-400 mb-4">
-        Esta funcionalidade será implementada em breve.
-      </p>
-      <div className="mt-4">
-        <Link to="/login" className="text-maktub-yellow hover:underline">
-          Voltar para o login
-        </Link>
-      </div>
-    </div>
-  </div>
-);
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -77,7 +61,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/recuperar-senha" element={<RecuperarSenhaPage />} />
+          <Route path="/recuperar-senha" element={<PasswordRecovery />} />
           <Route path="/cadastro" element={<Register />} />
           <Route path="/pacientes" element={<PacientesPage />} />
           <Route path="/programacao" element={<ProgramacaoPage />} />

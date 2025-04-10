@@ -12,8 +12,49 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [language, setLanguage] = useState<"pt" | "en">("pt");
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Get language from localStorage or parent component in a real app
+  // For now we'll simulate by reading from parent (simplified here)
+  useEffect(() => {
+    const htmlLang = document.documentElement.getAttribute('lang');
+    if (htmlLang === 'en') setLanguage('en');
+  }, []);
+
+  const translations = {
+    pt: {
+      login: "Login",
+      enterCredentials: "Entre com suas credenciais para acessar o sistema",
+      email: "Email",
+      password: "Senha",
+      forgotPassword: "Esqueceu a senha?",
+      enter: "Entrar",
+      entering: "Entrando...",
+      continueWith: "ou continue com",
+      noAccount: "Não tem uma conta?",
+      signUp: "Cadastre-se",
+      loginSuccess: "Login realizado com sucesso!",
+      loginError: "Falha no login. Verifique suas credenciais."
+    },
+    en: {
+      login: "Login",
+      enterCredentials: "Enter your credentials to access the system",
+      email: "Email",
+      password: "Password",
+      forgotPassword: "Forgot password?",
+      enter: "Enter",
+      entering: "Logging in...",
+      continueWith: "or continue with",
+      noAccount: "Don't have an account?",
+      signUp: "Sign up",
+      loginSuccess: "Login successful!",
+      loginError: "Login failed. Please check your credentials."
+    }
+  };
+  
+  const t = translations[language];
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,16 +65,16 @@ const Login = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       toast({
-        title: "Sucesso",
-        description: "Login realizado com sucesso!",
+        title: language === "pt" ? "Sucesso" : "Success",
+        description: t.loginSuccess,
       });
       // Navigate to dashboard after successful login
       navigate("/");
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Erro",
-        description: "Falha no login. Verifique suas credenciais.",
+        title: language === "pt" ? "Erro" : "Error",
+        description: t.loginError,
       });
     } finally {
       setIsLoading(false);
@@ -44,7 +85,7 @@ const Login = () => {
     try {
       toast({
         title: "Google Login",
-        description: "Iniciando login com Google...",
+        description: language === "pt" ? "Iniciando login com Google..." : "Starting Google login...",
       });
       // This would be implemented with actual Google authentication
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -52,8 +93,8 @@ const Login = () => {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Erro",
-        description: "Falha no login com Google.",
+        title: language === "pt" ? "Erro" : "Error",
+        description: language === "pt" ? "Falha no login com Google." : "Failed to login with Google.",
       });
     }
   };
@@ -62,7 +103,7 @@ const Login = () => {
     try {
       toast({
         title: "Instagram Login",
-        description: "Iniciando login com Instagram...",
+        description: language === "pt" ? "Iniciando login com Instagram..." : "Starting Instagram login...",
       });
       // This would be implemented with actual Instagram authentication
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -70,18 +111,18 @@ const Login = () => {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Erro",
-        description: "Falha no login com Instagram.",
+        title: language === "pt" ? "Erro" : "Error",
+        description: language === "pt" ? "Falha no login com Instagram." : "Failed to login with Instagram.",
       });
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
           <div className="flex items-center mb-4">
-            <Link to="/" className="hover:text-maktub-yellow mr-2">
+            <Link to="/" className="hover:text-maktub-yellow mr-2 dark:text-maktub-yellow">
               <ArrowLeft size={20} />
             </Link>
             <div className="flex items-center">
@@ -89,14 +130,14 @@ const Login = () => {
                 <span className="text-black font-bold text-sm">M</span>
               </div>
               <div className="ml-2">
-                <h1 className="text-lg font-bold">MAKTUB</h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400">INSTITUTO TERAPÊUTICO</p>
+                <h1 className="text-lg font-bold dark:text-maktub-yellow">MAKTUB</h1>
+                <p className="text-xs text-gray-500 dark:text-maktub-light-yellow">INSTITUTO TERAPÊUTICO</p>
               </div>
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold">Login</CardTitle>
-          <CardDescription>
-            Entre com suas credenciais para acessar o sistema
+          <CardTitle className="text-2xl font-bold dark:text-maktub-yellow">{t.login}</CardTitle>
+          <CardDescription className="dark:text-gray-400">
+            {t.enterCredentials}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -106,8 +147,8 @@ const Login = () => {
                 <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 <Input
                   type="email"
-                  placeholder="Email"
-                  className="pl-10"
+                  placeholder={t.email}
+                  className="pl-10 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -119,8 +160,8 @@ const Login = () => {
                 <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 <Input
                   type="password"
-                  placeholder="Senha"
-                  className="pl-10"
+                  placeholder={t.password}
+                  className="pl-10 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -131,7 +172,7 @@ const Login = () => {
                   to="/recuperar-senha" 
                   className="text-sm text-maktub-yellow hover:underline"
                 >
-                  Esqueceu a senha?
+                  {t.forgotPassword}
                 </Link>
               </div>
             </div>
@@ -140,21 +181,21 @@ const Login = () => {
               className="w-full maktub-btn-primary" 
               disabled={isLoading}
             >
-              {isLoading ? "Entrando..." : "Entrar"}
+              {isLoading ? t.entering : t.enter}
             </Button>
           </form>
 
           <div className="relative my-6">
-            <Separator />
+            <Separator className="dark:bg-gray-700" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="bg-white dark:bg-gray-800 px-2 text-sm text-gray-500">ou continue com</span>
+              <span className="bg-white dark:bg-gray-800 px-2 text-sm text-gray-500 dark:text-gray-400">{t.continueWith}</span>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <Button 
               variant="outline" 
-              className="w-full flex items-center justify-center" 
+              className="w-full flex items-center justify-center dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-600" 
               onClick={handleGoogleLogin}
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -179,7 +220,7 @@ const Login = () => {
             </Button>
             <Button 
               variant="outline" 
-              className="w-full flex items-center justify-center" 
+              className="w-full flex items-center justify-center dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-600" 
               onClick={handleInstagramLogin}
             >
               <Instagram size={20} className="mr-2 text-pink-500" />
@@ -189,9 +230,9 @@ const Login = () => {
 
           <div className="mt-6 text-center text-sm">
             <span className="text-gray-500 dark:text-gray-400">
-              Não tem uma conta?{" "}
+              {t.noAccount}{" "}
               <Link to="/cadastro" className="text-maktub-yellow hover:underline">
-                Cadastre-se
+                {t.signUp}
               </Link>
             </span>
           </div>
@@ -200,5 +241,8 @@ const Login = () => {
     </div>
   );
 };
+
+// Add the missing import
+import { useEffect } from "react";
 
 export default Login;

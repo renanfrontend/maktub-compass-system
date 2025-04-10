@@ -7,18 +7,41 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
+// Translation object
+const translations = {
+  pt: {
+    dashboard: "Dashboard",
+    patients: "Pacientes",
+    schedule: "Programação",
+    steps: "12 Passos",
+    documents: "Documentos",
+    login: "Entrar",
+    loading: "Carregando...",
+  },
+  en: {
+    dashboard: "Dashboard",
+    patients: "Patients",
+    schedule: "Schedule",
+    steps: "12 Steps",
+    documents: "Documents",
+    login: "Login",
+    loading: "Loading...",
+  }
+};
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [language, setLanguage] = useState<"pt" | "en">("pt");
   const location = useLocation();
+  const t = translations[language];
 
   const navigation = [
-    { name: language === "pt" ? "Dashboard" : "Dashboard", href: "/", icon: Home },
-    { name: language === "pt" ? "Pacientes" : "Patients", href: "/pacientes", icon: Users },
-    { name: language === "pt" ? "Programação" : "Schedule", href: "/programacao", icon: Calendar },
-    { name: language === "pt" ? "12 Passos" : "12 Steps", href: "/12-passos", icon: ClipboardList },
-    { name: language === "pt" ? "Documentos" : "Documents", href: "/documentos", icon: FileText },
+    { name: t.dashboard, href: "/", icon: Home },
+    { name: t.patients, href: "/pacientes", icon: Users },
+    { name: t.schedule, href: "/programacao", icon: Calendar },
+    { name: t.steps, href: "/12-passos", icon: ClipboardList },
+    { name: t.documents, href: "/documentos", icon: FileText },
   ];
 
   // Effect for theme changes
@@ -52,8 +75,8 @@ const Header = () => {
                 <span className="text-black font-bold text-sm">M</span>
               </div>
               <div className="ml-2">
-                <h1 className="text-xl font-bold text-black dark:text-white">MAKTUB</h1>
-                <p className="text-xs text-gray-600 dark:text-gray-300">INSTITUTO TERAPÊUTICO</p>
+                <h1 className="text-xl font-bold text-black dark:text-maktub-yellow">MAKTUB</h1>
+                <p className="text-xs text-gray-600 dark:text-maktub-light-yellow">INSTITUTO TERAPÊUTICO</p>
               </div>
             </Link>
           </div>
@@ -67,7 +90,7 @@ const Header = () => {
                 className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium ${
                   isActive(item.href)
                     ? "bg-maktub-yellow text-black"
-                    : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    : "text-gray-700 dark:text-maktub-yellow hover:bg-gray-100 dark:hover:bg-gray-800"
                 }`}
               >
                 <item.icon size={16} />
@@ -84,10 +107,10 @@ const Header = () => {
               onValueChange={(value) => value && changeLanguage(value as "pt" | "en")}
               className="bg-gray-100 dark:bg-gray-800 rounded-md p-1"
             >
-              <ToggleGroupItem value="pt" aria-label="Portuguese" className="text-xs font-medium">
+              <ToggleGroupItem value="pt" aria-label="Portuguese" className="text-xs font-medium dark:data-[state=on]:bg-maktub-yellow dark:data-[state=on]:text-black">
                 PT
               </ToggleGroupItem>
-              <ToggleGroupItem value="en" aria-label="English" className="text-xs font-medium">
+              <ToggleGroupItem value="en" aria-label="English" className="text-xs font-medium dark:data-[state=on]:bg-maktub-yellow dark:data-[state=on]:text-black">
                 EN
               </ToggleGroupItem>
             </ToggleGroup>
@@ -97,7 +120,7 @@ const Header = () => {
               pressed={theme === "dark"} 
               onPressedChange={toggleTheme}
               aria-label="Toggle theme"
-              className="p-2"
+              className="p-2 dark:data-[state=on]:bg-maktub-yellow dark:data-[state=on]:text-black"
             >
               {theme === "dark" ? <Moon size={18} /> : <Sun size={18} />}
             </Toggle>
@@ -106,14 +129,14 @@ const Header = () => {
               href="https://www.instagram.com/institutomaktub/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-700 dark:text-gray-300 hover:text-maktub-yellow transition-colors"
+              className="text-gray-700 dark:text-maktub-yellow hover:text-maktub-yellow transition-colors"
             >
               <Instagram size={20} />
             </a>
             <Button asChild className="maktub-btn-primary">
               <Link to="/login">
                 <User size={16} className="mr-2" />
-                {language === "pt" ? "Entrar" : "Login"}
+                {t.login}
               </Link>
             </Button>
           </div>
@@ -126,7 +149,7 @@ const Header = () => {
               onPressedChange={toggleTheme}
               aria-label="Toggle theme"
               size="sm"
-              className="p-1"
+              className="p-1 dark:data-[state=on]:bg-maktub-yellow dark:data-[state=on]:text-black"
             >
               {theme === "dark" ? <Moon size={16} /> : <Sun size={16} />}
             </Toggle>
@@ -134,15 +157,15 @@ const Header = () => {
             {/* Mobile Language Toggle */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="dark:text-maktub-yellow">
                   <Globe size={16} />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => changeLanguage("pt")}>
+              <DropdownMenuContent align="end" className="dark:bg-gray-800 dark:border-gray-700">
+                <DropdownMenuItem onClick={() => changeLanguage("pt")} className="dark:text-maktub-yellow dark:hover:bg-gray-700">
                   Português
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage("en")}>
+                <DropdownMenuItem onClick={() => changeLanguage("en")} className="dark:text-maktub-yellow dark:hover:bg-gray-700">
                   English
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -152,6 +175,7 @@ const Header = () => {
               variant="ghost"
               size="icon"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="dark:text-maktub-yellow"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </Button>
@@ -170,7 +194,7 @@ const Header = () => {
                 className={`flex items-center space-x-3 px-3 py-2 rounded-md text-base font-medium ${
                   isActive(item.href)
                     ? "bg-maktub-yellow text-black"
-                    : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    : "text-gray-700 dark:text-maktub-yellow hover:bg-gray-100 dark:hover:bg-gray-800"
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -183,14 +207,14 @@ const Header = () => {
                 href="https://www.instagram.com/institutomaktub/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-700 dark:text-gray-300 hover:text-maktub-yellow transition-colors"
+                className="text-gray-700 dark:text-maktub-yellow hover:text-maktub-yellow transition-colors"
               >
                 <Instagram size={20} />
               </a>
               <Button asChild className="maktub-btn-primary w-full">
                 <Link to="/login">
                   <User size={16} className="mr-2" />
-                  {language === "pt" ? "Entrar" : "Login"}
+                  {t.login}
                 </Link>
               </Button>
             </div>
